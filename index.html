@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Med Khalil (infected_tn) — Security Researcher</title>
+<meta name="description" content="Med Khalil (infected_tn), bug bounty hunter from Tunisia. 79 vulnerabilities found across 40 programs on HackerOne.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Spline+Sans:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0E1726;
+  --panel:#15213552;
+  --line:#23324880;
+  --line-solid:#243247;
+  --text:#DCE5F0;
+  --dim:#8295AC;
+  --faint:#56687F;
+  --signal:#F3B13B;
+  --signal-ink:#0E1726;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){
+  :root{
+    --bg:#F3F5F8;
+    --panel:#FFFFFF9c;
+    --line:#D3DBE4;
+    --line-solid:#D3DBE4;
+    --text:#182433;
+    --dim:#53657A;
+    --faint:#8597AB;
+    --signal:#C77A15;
+    --signal-ink:#FFFFFF;
+    color-scheme:light;
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{
+  background:
+    radial-gradient(1200px 600px at 78% -8%, color-mix(in oklab, var(--signal) 10%, transparent), transparent 70%),
+    var(--bg);
+  color:var(--text);
+  font:400 1.0625rem/1.65 "Spline Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  letter-spacing:.005em;
+}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--signal);outline-offset:3px;border-radius:3px}
+.wrap{max-width:70rem;margin:0 auto;padding:0 1.75rem}
+.mono{font-family:"Spline Sans Mono",ui-monospace,monospace}
+
+/* ---- header ---- */
+header{position:sticky;top:0;z-index:20;backdrop-filter:blur(10px);
+  background:color-mix(in oklab, var(--bg) 78%, transparent);
+  border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between;height:4rem;gap:1rem}
+.id{display:flex;align-items:baseline;gap:.6rem;font-family:"Spline Sans Mono",monospace;font-weight:500}
+.id .dot{width:.5rem;height:.5rem;border-radius:50%;background:var(--signal);align-self:center;box-shadow:0 0 0 3px color-mix(in oklab,var(--signal) 25%,transparent)}
+.id b{font-weight:500}
+.id .you{color:var(--dim)}
+nav{display:flex;gap:1.5rem;font-size:.95rem}
+nav a{text-decoration:none;color:var(--dim)}
+nav a:hover{color:var(--text)}
+@media(max-width:620px){nav{display:none}}
+
+/* ---- hero ---- */
+.hero{padding:clamp(3.5rem,9vw,7rem) 0 clamp(2.5rem,5vw,4rem)}
+.kicker{font-family:"Spline Sans Mono",monospace;color:var(--signal);font-size:.95rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:.6rem}
+.kicker::before{content:"";width:2rem;height:1px;background:var(--signal)}
+.hero h1{
+  font-family:"Archivo",sans-serif;font-weight:900;
+  font-size:clamp(2.8rem,9vw,6.5rem);line-height:.92;letter-spacing:-.025em;
+  max-width:16ch;
+}
+.hero h1 em{font-style:normal;color:var(--signal)}
+.sub{margin-top:1.75rem;font-size:1.2rem;max-width:42rem;color:var(--dim)}
+.sub b{color:var(--text);font-weight:500}
+
+/* ---- stat strip ---- */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:3rem;
+  background:var(--line-solid);border:1px solid var(--line-solid);border-radius:12px;overflow:hidden}
+.stat{background:var(--bg);padding:1.4rem 1.5rem}
+.stat .n{font-family:"Archivo",sans-serif;font-weight:900;font-size:clamp(1.9rem,4vw,2.6rem);line-height:1;letter-spacing:-.02em}
+.stat .l{color:var(--dim);font-size:.9rem;margin-top:.4rem}
+.stat.live .n{color:var(--signal)}
+@media(max-width:620px){.strip{grid-template-columns:repeat(2,1fr)}}
+
+/* ---- sections ---- */
+section{padding:clamp(3rem,6vw,5rem) 0;border-top:1px solid var(--line)}
+.head{display:flex;align-items:baseline;gap:1rem;margin-bottom:2rem}
+.head .num{font-family:"Spline Sans Mono",monospace;color:var(--faint);font-size:.95rem}
+h2{font:700 clamp(1.6rem,4vw,2.1rem)/1.05 "Archivo",sans-serif;letter-spacing:-.015em}
+.lede{max-width:44rem;color:var(--dim);margin-bottom:2rem}
+
+/* about */
+.about{display:grid;grid-template-columns:1.1fr .9fr;gap:3.5rem}
+.about p+p{margin-top:1rem}
+.focus{list-style:none;margin-top:.25rem}
+.focus li{display:grid;grid-template-columns:auto 1fr;gap:1rem;align-items:baseline;
+  padding:.85rem 0;border-top:1px solid var(--line)}
+.focus li:last-child{border-bottom:1px solid var(--line)}
+.focus .k{font-weight:500}
+.focus .v{color:var(--dim);font-size:.95rem;text-align:right}
+@media(max-width:720px){.about{grid-template-columns:1fr;gap:2.5rem}}
+
+/* findings */
+.find{list-style:none;display:grid;gap:1px;background:var(--line-solid);
+  border:1px solid var(--line-solid);border-radius:12px;overflow:hidden}
+.find li{background:var(--bg);display:grid;grid-template-columns:1fr auto;gap:1rem 1.5rem;
+  align-items:center;padding:1.3rem 1.5rem;transition:background .15s}
+.find li:hover{background:color-mix(in oklab,var(--signal) 6%,var(--bg))}
+.find .title{font-weight:500;display:block}
+.find .type{font-family:"Spline Sans Mono",monospace;font-size:.82rem;color:var(--signal);margin-bottom:.35rem}
+.find .with{color:var(--faint);font-size:.9rem;font-weight:400}
+.find .state{font-family:"Spline Sans Mono",monospace;font-size:.85rem;color:var(--dim);
+  display:inline-flex;align-items:center;gap:.5rem;white-space:nowrap}
+.find .state::before{content:"";width:.5rem;height:.5rem;border-radius:50%;background:#49B37A}
+.find .state.triaged::before{background:var(--signal)}
+@media(max-width:560px){.find li{grid-template-columns:1fr}}
+
+/* badges */
+.badges{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));gap:1rem}
+.badges li{padding:1.4rem;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+.badges .b{font:700 1.2rem/1 "Archivo",sans-serif}
+.badges .d{color:var(--dim);font-size:.9rem;margin-top:.5rem;font-family:"Spline Sans Mono",monospace}
+
+/* orgs */
+.orgs{list-style:none;display:flex;flex-wrap:wrap;gap:.6rem}
+.orgs li{padding:.5rem 1rem;border:1px solid var(--line-solid);border-radius:999px;
+  font-size:.95rem;color:var(--dim)}
+.orgs li:hover{color:var(--text);border-color:var(--signal)}
+
+/* contact */
+.contact .lede{margin-bottom:2rem}
+.cta{display:flex;flex-wrap:wrap;gap:.9rem}
+.btn{display:inline-flex;align-items:center;padding:.9rem 1.5rem;border-radius:8px;
+  text-decoration:none;font-weight:500;border:1px solid var(--line-solid);transition:all .15s}
+.btn:hover{border-color:var(--signal)}
+.btn.primary{background:var(--signal);color:var(--signal-ink);border-color:var(--signal)}
+.btn.primary:hover{filter:brightness(1.08)}
+footer{border-top:1px solid var(--line);padding:2rem 0 3rem;color:var(--faint);font-size:.9rem;
+  display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap bar">
+    <span class="id"><span class="dot" aria-hidden="true"></span><b>infected_tn</b><span class="you">/ Med Khalil</span></span>
+    <nav aria-label="Sections">
+      <a href="#about">About</a>
+      <a href="#programs">Programs</a>
+      <a href="#badges">Badges</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero" style="border-top:0">
+    <p class="kicker">Security researcher · Tunisia · since 2016</p>
+    <h1>I find what your scanners <em>miss.</em></h1>
+    <p class="sub"><b>Med Khalil</b> is a bug bounty hunter who works at scale — deep recon across large attack surfaces, then turning overlooked assets and unpatched CVEs into proven, high-impact vulnerabilities.</p>
+
+    <div class="strip" role="list" aria-label="Career stats">
+      <div class="stat" role="listitem"><div class="n">79</div><div class="l">Vulnerabilities found</div></div>
+      <div class="stat" role="listitem"><div class="n">40</div><div class="l">Programs thanked by</div></div>
+      <div class="stat" role="listitem"><div class="n">10</div><div class="l">Years hunting</div></div>
+      <div class="stat live" role="listitem"><div class="n">Open</div><div class="l">For employment</div></div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="head"><span class="num">01</span><h2>About me</h2></div>
+    <div class="about">
+      <div>
+        <p>I’ve been hunting since 2016, with 79 valid reports resolved across telecoms, finance, automotive, government and media programs. My strength is scale: deep reconnaissance over large, sprawling attack surfaces, then turning an overlooked asset or an unpatched known-CVE into a proven, high-impact vulnerability.</p>
+        <p>I’ve found the same class of bug across hundreds of hosts — DOM XSS through exposed Swagger UI, SSRF via vulnerable WebLogic and Apache, Jira and OpenAPI information disclosure, and subdomain takeovers on dangling cloud records — as well as logic flaws like payment-gateway clickjacking, OTP user enumeration, and identity-verification bypass.</p>
+        <p>I care about clear reports: reproducible steps, honest impact, and a concrete fix, so triage teams can close the root cause, not just the symptom.</p>
+      </div>
+      <ul class="focus" aria-label="Areas of focus">
+        <li><span class="k">Reconnaissance</span><span class="v">Asset discovery, subdomain enumeration at scale</span></li>
+        <li><span class="k">Known-CVE exploitation</span><span class="v">WebLogic, Apache, Jira, Swagger UI</span></li>
+        <li><span class="k">Cross-site scripting</span><span class="v">DOM, reflected &amp; stored XSS, CSRF chains</span></li>
+        <li><span class="k">Server-side</span><span class="v">SSRF, path &amp; info disclosure</span></li>
+        <li><span class="k">Subdomain takeover</span><span class="v">Netlify, Shopify, Hatena, dangling DNS</span></li>
+        <li><span class="k">Logic &amp; identity</span><span class="v">Clickjacking, rate-limit, KYC bypass</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="programs">
+    <div class="head"><span class="num">02</span><h2>Acknowledged by</h2></div>
+    <p class="lede">Public programs that have thanked me for a valid report. Confidential programs are not listed.</p>
+    <ul class="orgs"><li>Vodafone</li><li>Crypto.com</li><li>Thomson Reuters</li><li>MTN Group</li><li>Ford</li><li>Meta</li><li>AT&amp;T</li><li>Fresenius</li><li>Zurich Insurance</li><li>IBM</li><li>McKesson</li><li>Ziff Davis</li><li>GoDaddy</li><li>Shutterfly</li><li>Sony</li><li>U.S. Dept of Defense</li><li>Mondelēz International</li><li>ABB</li><li>The Walt Disney Company</li><li>Allegion</li><li>Avalara</li><li>Nubank</li><li>Khan Academy</li><li>Delivery Hero</li><li>Top Echelon Software</li><li>Veeam</li><li>Smule</li><li>CBRE</li><li>FINRA</li><li>Zebra</li><li>Anywhere Real Estate</li><li>U.S. Dept of State</li><li>Glovo</li><li>Rebellion Defense</li><li>Expedia Group</li></ul>
+  </section>
+
+  <section id="badges">
+    <div class="head"><span class="num">03</span><h2>Recent badges</h2></div>
+    <ul class="badges">
+      <li><div class="b">Greybeard</div><div class="d">Mar 2026</div></li>
+      <li><div class="b">Swagger</div><div class="d">Aug 2023</div></li>
+      <li><div class="b">Insecticide</div><div class="d">Jul 2023</div></li>
+    </ul>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="head"><span class="num">04</span><h2>Get in touch</h2></div>
+    <p class="lede">I’m open to security roles and freelance testing. Running a disclosure program or want a second pair of eyes on your app? Reach out.</p>
+    <div class="cta">
+      <a class="btn primary" href="mailto:infected_tn@wearehackerone.com">Email me</a>
+      <a class="btn" href="https://hackerone.com/infected_tn">HackerOne</a>
+      <a class="btn" href="https://github.com/infectedtn/">GitHub</a>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <span>© 2026 Med Khalil · infected_tn</span>
+  <span class="mono">All testing performed within program scope.</span>
+</footer>
+</body>
+</html>
